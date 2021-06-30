@@ -63,6 +63,6 @@ dictionary = {"date": date, "infected": infected, "death": death}
 
 driver.quit()
 
-df = pd.DataFrame.fromdict(dictionary)
+df = pd.DataFrame.from_dict(dictionary)
 
 df.to_csv("corona_yan.csv")
