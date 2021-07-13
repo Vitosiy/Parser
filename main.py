@@ -48,7 +48,8 @@ def main():
     while True:
         action.move_to_element_with_offset(element, 1, 0)
         action.move_by_offset(pace, 0)
-        perform_actions(action)
+        action.perform()
+        action.reset_actions()
         infected_ = driver.find_element_by_xpath(
             '/html/body/main/section/div/section[1]/div/div/div/div[2]/div[2]/div[1]/div[2]/div[3]/div[2]/div[1]/div[3]/div/div[20]/div[1]/span[1]').text
         death_ = driver.find_element_by_xpath(
@@ -56,25 +57,20 @@ def main():
         date_ = driver.find_element_by_xpath(
             '/html/body/main/section/div/section[1]/div/div/div/div[2]/div[2]/div[1]/div[2]/div[3]/div[2]/div[1]/div[3]/div/div[20]/div[4]/span').text
 
-        element = WebDriverWait(driver,
-                                20).until(EC.presence_of_element_located((By.XPATH,
-                                                                          '/html/body/main/section/div/section[1]/div/div/div/div[2]/div[2]/div[1]/div[2]/div[3]/div[2]/div[1]/div[3]/div/div[20]')))
-
-
-
-
-        if infected_ == "32" and death_ == "0" and date_ == "12 МАР":
+        if infected_ == "34" and death_ == "0" and date_ == "12 МАР":
             infected.append(infected_)
             death.append(death_)
             date.append(date_)
             break
 
-        if (date_ in date) and (death_ in death) and (infected_ in infected):
+        if (date_ == date[-1]) and (death_ == death[-1]) and (infected_ == infected[-1]):
             pass
+            pace -= 1
         else:
             infected.append(infected_)
             death.append(death_)
             date.append(date_)
+            pace -= 1
 
     dictionary = {"date": date, "infected": infected, "death": death}
 
@@ -82,8 +78,7 @@ def main():
 
     df = pd.DataFrame.from_dict(dictionary)
 
-    df.to_csv("corona_yan.csv")
-
+    df.to_csv("corona_yan_rus.csv")
 
 if __name__ == '__main__':
     main()
